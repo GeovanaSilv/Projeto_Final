@@ -1,0 +1,26 @@
+.cardInfo{
+    background-color: rgb(192, 173, 220);
+    margin: 10px 20px;
+    padding: 10px 20px;
+    max-width:  20%;
+   align-items: center;
+    display: flex;
+    border-radius: 6px;
+    flex-direction: column;
+    
+}
+
+.select{
+    margin: 20px;
+    border-radius: 5px;
+    background-color:rgb(148, 158, 229);
+    padding: 20px;
+
+}
+.img{
+    max-width: 150px;
+    align-items: center;
+}
+.span{
+
+}
