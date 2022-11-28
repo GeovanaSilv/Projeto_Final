@@ -11,24 +11,24 @@ namespace Cardapio_API.Controllers{
     [Route("api/[controller]")]
     [ApiController]
 
-    public class CardapioController: ControllerBase{
+    public class TipoController: ControllerBase{
 
         private CardapioContext _context;
-        public CardapioController(CardapioContext context){
+        public TipoController(CardapioContext context){
 
             _context = context;
         }
 
        [HttpGet]
-       public ActionResult<List<Cardapio>> GetAll(){
-        return _context.Cardapio.ToList();
+       public ActionResult<List<Tipo>> GetAll(){
+        return _context.Tipo.ToList();
        }
 
-        [HttpGet("{CardapioId}")]
-        public ActionResult<List<Cardapio>> Get(int CardapioId){
+        [HttpGet("{TipoId}")]
+        public ActionResult<List<Tipo>> Get(int TipoId){
 
             try{
-                var resultado = _context.Cardapio.Find(CardapioId);
+                var resultado = _context.Tipo.Find(TipoId);
                 if(resultado == null)
                 {
                     return NotFound();
@@ -39,15 +39,17 @@ namespace Cardapio_API.Controllers{
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Falha com o banco de dados");
             }
             
-        }
+        
 
-        [HttpPost]
-        public async Task<ActionResult> POST (Cardapio model){
+        }
+   [HttpPost]
+        public async Task<ActionResult> POST (Tipo model){
 
             try{
-                _context.Cardapio.Add(model);
+                _context.Tipo.Add(model);
                 if(await _context.SaveChangesAsync() == 1){
-                    return Created($"/api/cardapio/{model.nome}",model);
+                     
+                    return Created($"/api/Tipo/{model.nomeTipo}",model);
                 }
             }
             catch {
@@ -56,15 +58,15 @@ namespace Cardapio_API.Controllers{
             return BadRequest();
         }
 
-         [HttpDelete("{CardapioId}")]
-        public async Task<ActionResult> DELETE (int CardapioId ){
+         [HttpDelete("{TipoId}")]
+        public async Task<ActionResult> DELETE (int TipoId ){
 
             try{
-                var comida = await _context.Cardapio.FindAsync(CardapioId);
-                if(comida == null){
+                var tipoCar = await _context.Tipo.FindAsync(TipoId);
+                if(tipoCar == null){
                     return NotFound();
                 }
-                _context.Remove(comida);
+                _context.Remove(tipoCar);
                 await _context.SaveChangesAsync();
                 return NoContent();
             }
@@ -74,23 +76,20 @@ namespace Cardapio_API.Controllers{
             
         }
 
-         [HttpPut("{CardapioId}")]
-        public async Task<ActionResult> PUT (Cardapio dadosCardapioAlt, int CardapioId){
+         [HttpPut("{TipoId}")]
+        public async Task<ActionResult> PUT (Tipo dadosTipoAlt, int TipoId){
 
             try{
-                 var resultado = await _context.Cardapio.FindAsync(CardapioId);
-                if(CardapioId != resultado.id){
+                 var resultado = await _context.Tipo.FindAsync(TipoId);
+                if(TipoId != resultado.id){
 
                    return  BadRequest();
                 }
-                resultado.nome = dadosCardapioAlt.nome;
-                resultado.porcoes = dadosCardapioAlt.porcoes;
-                resultado.valor = dadosCardapioAlt.valor;
-               resultado.codTipo = dadosCardapioAlt.codTipo;
-               resultado.nomeTipo = dadosCardapioAlt.nomeTipo;
-                resultado.descricao = dadosCardapioAlt.descricao;
+                resultado.nomeTipo = dadosTipoAlt.nomeTipo;
+                resultado.codTipo = dadosTipoAlt.codTipo;
+              
                 await _context.SaveChangesAsync();
-                return Created($"/api/cardapio/{dadosCardapioAlt.nome}", dadosCardapioAlt);
+                return Created($"/api/Tipo/{dadosTipoAlt.nomeTipo}", dadosTipoAlt);
             }
             catch {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Falha com o banco de dados");

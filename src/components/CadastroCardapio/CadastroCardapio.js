@@ -5,9 +5,11 @@ import axios from 'axios';
 
 const title = "Cadastrar Cardapio";
 const urlApiMenu = "http://localhost:5205/api/cardapio";
+const urlApiTipo = "http://localhost:5205/api/Tipo";
 const initialState = {
-    cardapio: {id:0, nome:'', porcoes:0, tipo:'', valor:'', descricao:'' },
-    lista: []
+    cardapio: {id:0, nome:'', porcoes:0, valor:'', nomeTipo:'', codTipo:0,descricao:'' },
+    lista: [],
+    listaTipo:[],
 }
 
 export default class CadastroCardapio extends Component {
@@ -17,6 +19,9 @@ export default class CadastroCardapio extends Component {
     componentDidMount(){
         axios(urlApiMenu).then(resp => {
           this.setState({lista: resp.data})
+        })
+        axios(urlApiTipo).then(resp =>{
+            this.setState({listaTipo: resp.data})
         })
     }
     
@@ -93,19 +98,22 @@ export default class CadastroCardapio extends Component {
         value={this.state.cardapio.porcoes}
         onChange={ e => this.atualizaCampo(e)}
         />
+         <label>Tipo : </label>
+               < select name = "codTipo" onChange={e=>{this.atualizaCampo(e)}}>
+                <option value="">
+                    Escolha um Tipo
+                </option>
 
-      <label> Tipo: </label>
-        <input
-        type="text"
-        id="tipo"
-        placeholder="Tipo da comida"
-        className="form-input"
-        name="tipo"
-        
-        value={this.state.cardapio.tipo}
-        onChange={ e => this.atualizaCampo(e)}
-        />
-
+                    {this.state.listaTipo.map((tipoCar)=>
+                   
+               <option name = "codTipo"
+                   value={tipoCar.codTipo}
+               >
+                {tipoCar.nomeTipo}
+                </option> 
+                    )}
+                 </select>
+   
 
 
         <label> Valor: </label>
@@ -162,12 +170,13 @@ export default class CadastroCardapio extends Component {
                 </thead>
 
                 <tbody>
+                    
                     {this.state.lista.map(
                         (cardapio) => 
                             <tr key={cardapio.id}>
                                 <td>{cardapio.nome}</td>
                                 <td>{cardapio.porcoes}</td>
-                                <td>{cardapio.tipo}</td>
+                                <td>{cardapio.codTipo}</td>
                                 <td>{cardapio.valor}</td>
                                 <td>{cardapio.descricao}</td>
                                 <td>

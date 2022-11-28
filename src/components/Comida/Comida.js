@@ -11,8 +11,7 @@ renderForm (){
     return (
   <section>
     <div class  ="form-container">
-         <img src="logo.jpeg"></img>
-      <div class ="control">
+      <div class ="controls">
         <label for ="nome">Nome</label>
         <input type="text" name ="nome" id ="nome"/>
       </div>

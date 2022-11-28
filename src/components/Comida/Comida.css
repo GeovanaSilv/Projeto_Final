@@ -46,6 +46,15 @@ body{
   outline:  none;
   margin: 1em 0;
 }
+.controls input{
+    width: 100%;
+    display:  block;
+    padding:  10px;
+    color: #222;
+    border:  none;
+    outline:  none;
+    margin: 1em 0;
+  }
 .control input[type ="submit"]{
   background: red;
    color: #fff;
