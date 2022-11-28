@@ -6,6 +6,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+ConfigurationManager configuration = builder.Configuration;
+
 //Allow CORS
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -31,6 +33,29 @@ builder.Services.AddCors(options =>{
 });
 });
 
+//Adding Authentication
+builder.Services.AddAuthentication(options =>{
+   options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+   options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+})
+//Adding Jwt Bearer
+.AddJwtBearer(options =>
+{
+ options.SaveToken = true;
+options.RequireHttpsMetadata = false;
+ options.TokenValidationParameters = new TokenValidationParameters()
+ {
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidAudience = configuration["JWT:ValidAudience"],
+    ValidIssuer = configuration["JWT:ValidIssuer"],
+    IssuerSigningKey = new 
+    SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+ };
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -52,7 +77,7 @@ if (app.Environment.IsDevelopment())
 
 //Allow CORS
 app.UseCors(MyAllowSpecificOrigins);
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -19,7 +19,7 @@ namespace Cardapio_API.Data
        }
 
         public DbSet<Cardapio> Cardapio {get; set;}
-        public DbSet<User> usuario{get; set;}
+        public DbSet<User> Usuario{get; set;}
         public DbSet<Tipo> Tipo{get;set;}
 
        

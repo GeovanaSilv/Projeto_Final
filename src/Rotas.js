@@ -1,13 +1,27 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import {Routes, Route} from "react-router-dom";
  
 import Main from './components/template/Main';
-import CardapioCarometro from './components/CardapioCarometro/CardapioCarometro';
-import Comida from './components/Comida/Comida';
+
+//import Comida from './components/Comida/Comida';
+import AuthService from "./Services/AuthService";
+import Logout from "./components/Logout/Logout";
 import CadastroCardapio from "./components/CadastroCardapio/CadastroCardapio";
+import Login from "./components/Login/Login";
+
 
 
 export default function Rotas(){
+    const [currentUser, setCurrentUser] = useState(undefined);
+
+    
+    useEffect(() => {
+    const user = AuthService.getCurrentUser();
+    if (user) {
+    setCurrentUser(user);
+    }
+    }, []);   
+
 return(
     <Routes>
         <Route exact path="/"
@@ -16,19 +30,36 @@ return(
              <div>Tela de Cadastro de Menu  </div>
             </Main>}
         />
-        <Route path="/menu"element={<CardapioCarometro/>}/>
-        <Route path ='*' element={
-                <Main title="Cadastro de Alunos!">
-                    <div>Cardapio</div>
-                </Main>}
-                />
-    <Route path="/login" element={<Comida/>}/>
-    <Route path ='*' element={
-                <Main title="Comida">
-                    <div>Pagina em comida</div>
-                </Main>}
-                />
-                 <Route path="/Cadastro" element={<CadastroCardapio/>}/>
+
+       
+
+
+            {currentUser ? (
+              <Route  exact path="/Cadastro" element={<CadastroCardapio/>}/>
+            ):(
+                <Route  exact path="/Cadastro" element={
+                    <Main title="Cadastro de Cardapio">
+                    <div>Não autorizado!</div>
+                            </Main>
+                }/>
+            )}
+                 
+    
+
+                  
+            <Route path="/menu"element={
+                <Main title="Carometro!">
+                <div>Carometro...</div>
+            </Main>
+            }
+/>
+            <Route path='/login' element={<Login />} />
+            <Route path='/logout' element={<Logout />} />    
+
+
+      
+            <Route path="*" to='/' />
+    
     
     </Routes>
 )
