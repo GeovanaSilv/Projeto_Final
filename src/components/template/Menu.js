@@ -17,14 +17,16 @@ export default function Menu(props){
     return(
         <nav className ='menu'>
        
-  <Link to ="/menu">
-      Menu
+  <Link to ="/Carometro">
+      Menu Cardapio
+
 </Link>
 <Link to ="#">
         desativada
 </Link>
 <Link to="/cadastro">
             Cadastrar Cardapio
+
            </Link>
            {currentUser ? (
 <Link to="/logout">

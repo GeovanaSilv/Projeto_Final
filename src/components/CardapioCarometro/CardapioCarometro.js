@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import './CardapioCarometro.css';
 import Main from '../template/Main';
+import UserService from "../../Services/UserService";
 
 const title = "Carometro";
 const urlApiTipo = "http://localhost:5205/api/Tipo";
@@ -11,19 +12,32 @@ const initialState ={
   tipoCar: {id:0, nomeTipo:'', codTipo:0 },
   lista:[],
   listaCarometro: [],
-  listaTipo:[]
+  listaTipo:[],
+  mens:null
 }
 export default class CardapioCarometro extends Component{
 
   state ={...initialState}
   componentDidMount(){
-    axios(urlAPICardapio).then(resp =>{
-      this.setState({lista:resp.data})
-    })
-    axios(urlApiTipo).then(resp=>{
-      this.setState({listaTipo:resp.data})
-    })
-  }
+
+    UserService.getPublicContent().then(
+      ( response) =>{
+       this.setState({lista:response.data})
+      },
+      (error) =>{
+       const _mens =
+       (error.response &&
+           error.response.data &&
+           error.response.data.message) ||
+       error.message ||
+       error.toString()
+   this.setState({mens: _mens})
+   console.log('_mens: ' + _mens)
+    
+       }
+    )
+   }
+   
 
   getListaAtualizadaCardapio(evento){
     const codTipo = evento.target.value
@@ -89,9 +103,19 @@ MenuCards(){
 }
 render() {
   return (
+    
+           
+     
       <Main title={title}>
-          {this.Select()}
-          {this.MenuCards()}
+       {
+           
+           (this.state.mens != null) ? 'Problema com Conexão ou Autenticação' :
+           <>
+          
+           {this.Select()}
+           {this.MenuCards()}
+           </>
+        }
        
       </Main>
   )

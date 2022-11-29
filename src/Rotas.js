@@ -7,6 +7,7 @@ import Main from './components/template/Main';
 import AuthService from "./Services/AuthService";
 import Logout from "./components/Logout/Logout";
 import CadastroCardapio from "./components/CadastroCardapio/CadastroCardapio";
+import CardapioCarometro from "./components/CardapioCarometro/CardapioCarometro";
 import Login from "./components/Login/Login";
 
 
@@ -47,11 +48,7 @@ return(
     
 
                   
-            <Route path="/menu"element={
-                <Main title="Carometro!">
-                <div>Carometro...</div>
-            </Main>
-            }
+            <Route  exact path="/Carometro"element={<CardapioCarometro/>}
 />
             <Route path='/login' element={<Login />} />
             <Route path='/logout' element={<Logout />} />    

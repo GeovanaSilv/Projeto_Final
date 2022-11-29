@@ -5,7 +5,7 @@
 
     const login =(username, senha)=>{
         return axios
-    .post(API_URL + "auth", {
+    .post(API_URL + "login", {
     username,
     senha,
     })

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import UserService from "../../Services/UserService";
 import Main from "../template/Main";
 import './CadastroCardapio.css';
 import axios from 'axios';
+//import { ErrorResponse } from "@remix-run/router";
 
 const title = "Cadastrar Cardapio";
 const urlApiMenu = "http://localhost:5205/api/cardapio";
@@ -10,20 +12,85 @@ const initialState = {
     cardapio: {id:0, nome:'', porcoes:0, valor:'', nomeTipo:'', codTipo:0,descricao:'' },
     lista: [],
     listaTipo:[],
+    mens:null
 }
 
-export default class CadastroCardapio extends Component {
+const  user = JSON.parse(localStorage.getItem("user"))
 
+
+export default class CadastroCardapio extends Component {
     state = {...initialState}
 
-    componentDidMount(){
-        axios(urlApiMenu).then(resp => {
+componentDidMount(){
+ UserService.getCardapioBoard().then(
+   ( response) =>{
+    this.setState({lista:response.data})
+   },
+   (error) =>{
+    const _mens =
+    (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+    error.message ||
+    error.toString()
+this.setState({mens: _mens})
+console.log('_mens: ' + _mens)
+ 
+    }
+ )
+
+ UserService.getCardapioBoard().then(
+    ( response) =>{
+     this.setState({listaTipo:response.data})
+    },
+    (error) =>{
+     const _mens =
+     (error.response &&
+         error.response.data &&
+         error.response.data.message) ||
+     error.message ||
+     error.toString()
+ this.setState({mens: _mens})
+ console.log('_mens: ' + _mens)
+  
+     }
+  )
+
+
+
+
+}
+
+ 
+
+            
+
+
+
+    /*    axios(urlApiMenu).then(resp => {
           this.setState({lista: resp.data})
         })
+        */
+     /*  axios(urlApiMenu,{headers:{Authorization:'Bearer' + user.token}})
+              .then(resp =>{
+                this.setState({lista:resp.data});
+
+              }, 
+              (error) => {
+                const _mens = (error.response &&
+                     error.response.data &&
+                     error.response.data.message) ||
+                     error.message || error.toString();
+                     this.setState({mens : _mens})
+              }
+              )          
+ 
+
         axios(urlApiTipo).then(resp =>{
             this.setState({listaTipo: resp.data})
         })
     }
+    */
     
     limpar(){
         this.setState({cardapio: initialState.cardapio});
@@ -200,8 +267,15 @@ export default class CadastroCardapio extends Component {
     render(){
         return(
         <Main title={title}>
+         {
+           
+            (this.state.mens != null) ? 'Erro' :
+            <>
+           
             {this.formulario()}
             {this.tabela()}
+            </>
+         }
         </Main>
         )
     }
