@@ -21,9 +21,7 @@ export default function Menu(props){
       Menu Cardapio
 
 </Link>
-<Link to ="#">
-        desativada
-</Link>
+
 <Link to="/cadastro">
             Cadastrar Cardapio
 

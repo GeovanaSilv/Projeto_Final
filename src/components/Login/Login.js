@@ -13,7 +13,7 @@ export default function Login() {
  evento.preventDefault();
  const userForm = { username, password };
  if (!username || !password) {
- setMessage("Preencha o username e a senha para continuar!");
+ setMessage("Preencha o Usuário e a Senha para continuar!");
  } else {
      AuthService.login(username, password).then(
          () => {
@@ -35,45 +35,44 @@ export default function Login() {
          );
          }
     };
+
         return (
-        <div className="content">
+            <section>
+        <div class="form-container">
         <h1 className="tituloAuth">Login</h1>
         <form onSubmit={handleSubmit} className="formLogin" >
-        <div>
-        <label className="lblLogin" htmlFor="username">Username:
-        
+        <div className="control">
+        <label className="lblLogin" htmlFor="username">Usuário:        
         </label>
-        
         <input
         type="text"
         value={username}
         placeholder="Digite o e-mail"
-        className="inputAuth"
-        onChange={({ target }) => { setUsername(target.value);
-        
+        onChange={({ target }) => { setUsername(target.value); 
         setMessage(""); }}
         />
         </div>
-        <div>
+
+   
         <label className="lblLogin" htmlFor="senha">Senha:
-        
+    
         </label>
-        
+        <div className="control">
         <input
         type="password"
         value={password}
         placeholder="Digite a senha"
-        className="inputAuth"
         onChange={({ target }) => { setPassword(target.value);
             setMessage(""); }}
-/>
+      />
 </div>
-<button type="submit">Login</button>
 
-
+<button className ="btnLogin "type="submit">Login</button>
 
 <h4 className="msgErro">{message}</h4>
 </form>
+
 </div>
+</section>
 );
 }
